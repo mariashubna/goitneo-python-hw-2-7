@@ -16,7 +16,7 @@ class Phone(Field):
         if len(phone) == 10:
             super().__init__(phone)
         else:
-            raise ValueError('Enter the correct phone in number format from 5 to 12 characters.')
+            raise ValueError('Enter the correct phone in number format 10 characters.')
 
 class Record:
     def __init__(self, name):
@@ -62,4 +62,4 @@ class AddressBook(UserDict):
             self.data.pop(name)
         else:
             raise KeyError("The specified name doesn't exist.")
-
+        

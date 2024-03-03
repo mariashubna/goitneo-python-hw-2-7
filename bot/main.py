@@ -1,4 +1,4 @@
-# from address_book import AddressBook, Field, Name, Phone, Record
+from address_book import AddressBook, Field, Name, Phone, Record
 
 
 def parse_input(user_input):
@@ -12,8 +12,8 @@ def input_error(func):
             return func(*args, **kwargs)
         except ValueError:
             return "Give me name and phone please."
-        except KeyError:
-            return "Contact not found."
+        except KeyError as e:
+            return f"Contact {e} not found."
         except IndexError:
             return "Incomplete command."
 
@@ -25,12 +25,7 @@ def add_contact(args, contacts):
     if username in contacts:
         return 'This name was added. Please enter another name or use the command "change".'
     if phone in contacts.values():
-        return f"This number was saved with another name."
-    if not (2 <= len(username) <= 12):
-        return 'Enter the correct name from 2 to 12 characters.'
-    if not phone.isdigit() or not (5 <= len(phone) <= 12):
-        return 'Enter the correct phone in number format from 5 to 12 characters.'    
-    
+        return "This number was saved with another name."
     else:
         contacts[username] = phone
         return "Contact added."
@@ -39,7 +34,7 @@ def add_contact(args, contacts):
 def change_contact(args, contacts):
     username, phone = args
     if not username in contacts:
-        return 'There is no contact with the specified name.'
+        raise KeyError(username)
     if phone in contacts.values():
         return f"This number was saved with another name."
     if not phone.isdigit() or not (5 <= len(phone) <= 12):
@@ -54,7 +49,7 @@ def show_phone(args, contacts):
     if username in contacts:
         return contacts[username]
     else:
-        return 'There is no contact with the specified name.'
+        raise KeyError(username)
 
 def show_all(contacts):
     if contacts:
